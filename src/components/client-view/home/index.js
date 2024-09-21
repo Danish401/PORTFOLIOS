@@ -7,6 +7,7 @@ import {
   FaLinkedinIn,
   FaInstagram,
   FaTwitter,
+  FaGithub,
 } from "react-icons/fa";
 import Image from "next/image";
 import aiImage from "../../../assets/ai-image.png";
@@ -27,31 +28,51 @@ function variants() {
   };
 }
 
+// const socialIcons = [
+//   {
+//     id: "facebook",
+//     icon: <FaFacebookF color="#6C2DC7" className="w-[40px] h-[40px]" />,
+//   },
+//   {
+//     id: "twitter",
+//     icon: <FaTwitter color="#6C2DC7" className="w-[40px] h-[40px]" />,
+//   },
+//   {
+//     id: "linkedin",
+//     icon: <FaLinkedinIn color="#6C2DC7" className="w-[40px] h-[40px]" />,
+//   },
+//   {
+//     id: "instagram",
+//     icon: <FaInstagram color="#6C2DC7" className="w-[40px] h-[40px]" />,
+//   },
+// ];
 const socialIcons = [
   {
-    id: "facebook",
-    icon: <FaFacebookF color="#6C2DC7" className="w-[40px] h-[40px]" />,
+    id: "github",
+    icon: <FaGithub color="#6C2DC7" className="w-[40px] h-[40px]" />,
+    link: "https://github.com/Danish401",
+  },
+  {
+    id: "linkedin",
+    icon: <FaLinkedinIn color="#6C2DC7" className="w-[40px] h-[40px]" />,
+    link: "https://www.linkedin.com/in/danish-ali-7886a024a",
+  },
+  {
+    id: "instagram",
+    icon: <FaInstagram color="#6C2DC7" className="w-[40px] h-[40px]" />,
+    link: "https://www.instagram.com/danish.ali0209/",
   },
   {
     id: "twitter",
     icon: <FaTwitter color="#6C2DC7" className="w-[40px] h-[40px]" />,
   },
-  {
-    id: "linkedin",
-    icon: <FaLinkedinIn color="#6C2DC7" className="w-[40px] h-[40px]" />,
-  },
-  {
-    id: "instagram",
-    icon: <FaInstagram color="#6C2DC7" className="w-[40px] h-[40px]" />,
-  },
 ];
-
 export default function ClientHomeView({ data }) {
   console.log(data, "ClientHomeView");
   const setVariants = useMemo(() => variants(), []);
   const containerRef = useRef(null);
   return (
-    <div className="max-w-screen-xl mt-24 px-8 xl:px-16 mx-auto" id="home">
+    <div className="max-w-screen-xl px-8 mx-auto mt-24 xl:px-16" id="home">
       <AnimationWrapper>
         <motion.div
           className={
@@ -59,8 +80,8 @@ export default function ClientHomeView({ data }) {
           }
           variants={setVariants}
         >
-          <div className="flex flex-col justify-center items-start row-start-2 sm:row-start-1">
-            <h1 className="mb-4 text-3xl lg:text-4xl xl:text-6xl font-medium leading-normal">
+          <div className="flex flex-col items-start justify-center row-start-2 sm:row-start-1">
+            <h1 className="mb-4 text-3xl font-medium leading-normal lg:text-4xl xl:text-6xl">
               {data && data.length
                 ? data[0]?.heading.split(" ").map((item, index) => (
                     <span
@@ -76,30 +97,47 @@ export default function ClientHomeView({ data }) {
                   ))
                 : null}
             </h1>
-            <p className="text-[#2C94C0] mt-4 mb-8 font-bold">
-              {data && data.length ? data[0]?.summary : null}
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }} // Initial animation state
+              animate={{ opacity: 1, y: 0 }} // Final animation state
+              transition={{ duration: 0.8, ease: "easeOut" }} // Animation timing
+              whileHover={{ scale: 1.05 }} // Scale on hover
+            >
+              <p className="text-[#0b0e10] mt-4 mb-8 font-bold font-serif transition-all duration-300 ease-in-out hover:text-[#6C2DC7] hover:font-extrabold hover:font-[Playfair]">
+                {data && data.length ? data[0]?.summary : null}
+              </p>
+            </motion.div>
             <motion.div className="flex gap-3 cursor-pointer">
               {socialIcons.map((item) => (
-                <motion.div
+                <motion.a
                   key={item.id}
-                  initial={{ scale: 0 }}
-                  animate={{ rotate: 360, scale: 1 }}
-                  transition={{
-                    type: "spring",
-                    damping: 20,
-                    stiffness: 80,
-                    duration: 4,
-                  }}
-                  whileHover={{ scale: 1.2, rotate: 360 }}
-                  whileTap={{ scale: 0.8, rotate: -360, borderRadius: "100%" }}
+                  href={item.link || "#"} // Use '#' if no link provided
+                  target="_blank" // Open in a new tab
+                  rel="noopener noreferrer" // Security for links
                 >
-                  {item.icon}
-                </motion.div>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ rotate: 360, scale: 1 }}
+                    transition={{
+                      type: "spring",
+                      damping: 20,
+                      stiffness: 80,
+                      duration: 4,
+                    }}
+                    whileHover={{ scale: 1.2, rotate: 360 }}
+                    whileTap={{
+                      scale: 0.8,
+                      rotate: -360,
+                      borderRadius: "100%",
+                    }}
+                  >
+                    {item.icon}
+                  </motion.div>
+                </motion.a>
               ))}
             </motion.div>
           </div>
-          <motion.div ref={containerRef} className="flex w-full justify-end">
+          <motion.div ref={containerRef} className="flex justify-end w-full">
             <motion.div
               drag
               dragConstraints={containerRef}

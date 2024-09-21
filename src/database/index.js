@@ -3,7 +3,9 @@ import mongoose from "mongoose";
 export default async function connectToDB() {
   try {
     // if (mongoose.connections[0].readyState) return;
-    await mongoose.connect("mongodb://localhost:27017/ecommerceData");
+    await mongoose.connect(
+      "mongodb+srv://CV:CV4010@cluster0.qpstf.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0"
+    );
 
     console.log("Database connected successfully");
   } catch (e) {

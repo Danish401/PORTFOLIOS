@@ -6,8 +6,8 @@ const ProjectSchema = new mongoose.Schema(
     website: String,
     technologies: String,
     github: String,
-  },
-  { timestamps: true }
+  }
+  // { timestamps: true }
 );
 
 const Project =
